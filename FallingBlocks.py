@@ -55,6 +55,7 @@ class FallingBlocks(arcade.Window):
         self._level = 1
         self._lines = 0
         self._score = 0
+        self._gameover = False
         # Schedule game play update interval, no smaller than 0.1 seconds
         arcade.schedule(self._down, max(1 - self._level * .1, 0.1))
 
@@ -102,6 +103,10 @@ class FallingBlocks(arcade.Window):
         arcade.draw_text("Score\n" + str(self._score), self.WIDTH / 2, self.HEIGHT / 8 * 2,
                          arcade.color.WHITE, 18,
                          self.WIDTH // 2, "center")
+        if self._gameover:
+            arcade.draw_text("Game Over", 0, self.HEIGHT / 2,
+                             arcade.color.WHITE, 32,
+                             self.WIDTH // 2, "center")
 
     def _invalid(self) -> bool:
         """Is this an invalid game state?"""
@@ -134,6 +139,10 @@ class FallingBlocks(arcade.Window):
                     continue
             # Change over to next piece
             self._generate_pieces()
+            # If immediately after we generate the piece we are invalid, then we lost
+            if self._invalid():
+                arcade.unschedule(self._down)
+                self._gameover = True
             # Check for newly completed lines
             self._check_lines()
 
