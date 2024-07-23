@@ -9,30 +9,29 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITPCS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>
-
 from __future__ import annotations
 import arcade
-from typing import List
+import arcade.color
 from Util import Cell, Location
 import random
 
 # Aliases to make the rest of this file more readable
-Position = List[List[Cell]]
+Position = list[list[Cell]]
 E = Cell.EMPTY
 B = Cell.BLOCK
 
 
 class Piece:
-    def __init__(self, positions: List[Position], color: arcade.color, location: Location):
-        self._positions: List[Position] = positions
+    def __init__(self, positions: list[Position], color: tuple[int, int, int], location: Location):
+        self._positions: list[Position] = positions
         self._color = color
-        self._position_index: int = 0
-        self._location: Location = location
+        self._position_index = 0
+        self._location = location
 
     def rotate_right(self) -> None:
         self._position_index = (self._position_index + 1) % len(self._positions)
@@ -53,7 +52,7 @@ class Piece:
         self._location.row += 1
 
     @property
-    def color(self) -> arcade.color:
+    def color(self) -> tuple[int, int, int]:
         return self._color
 
     @property
@@ -61,11 +60,11 @@ class Piece:
         return self._positions[self._position_index]
 
     @property
-    def grid_locations(self) -> List[Location]:
-        locations: List[Location] = []
+    def grid_locations(self) -> list[Location]:
+        locations = []
         for row in range(len(self.position)):
             for col in range(len(self.position[0])):
-                cell: Cell = self.position[row][col]
+                cell = self.position[row][col]
                 if cell is Cell.BLOCK:
                     locations.append(Location(row + self._location.row,
                                               col + self._location.column))
@@ -80,127 +79,127 @@ class Piece:
 
 class I(Piece):
     def __init__(self, location: Location):
-        position0: Position = [[E, E, E, E],
-                               [E, E, E, E],
-                               [B, B, B, B],
-                               [E, E, E, E]]
+        position0 = [[E, E, E, E],
+                     [E, E, E, E],
+                     [B, B, B, B],
+                     [E, E, E, E]]
 
-        position1: Position = [[E, E, B, E],
-                               [E, E, B, E],
-                               [E, E, B, E],
-                               [E, E, B, E]]
+        position1 = [[E, E, B, E],
+                     [E, E, B, E],
+                     [E, E, B, E],
+                     [E, E, B, E]]
 
-        positions: List[Position] = [position0, position1]
+        positions = [position0, position1]
 
         super().__init__(positions, arcade.color.AMBER, location)
 
 
 class O(Piece):
     def __init__(self, location: Location):
-        position0: Position = [[E, E, E, E],
-                               [E, B, B, E],
-                               [E, B, B, E],
-                               [E, E, E, E]]
+        position0 = [[E, E, E, E],
+                     [E, B, B, E],
+                     [E, B, B, E],
+                     [E, E, E, E]]
 
-        positions: List[Position] = [position0]
+        positions = [position0]
 
         super().__init__(positions, arcade.color.RED, location)
 
 
 class J(Piece):
     def __init__(self, location: Location):
-        position0: Position = [[E, E, E],
-                               [B, B, B],
-                               [E, E, B]]
+        position0 = [[E, E, E],
+                     [B, B, B],
+                     [E, E, B]]
 
-        position1: Position = [[E, B, E],
-                               [E, B, E],
-                               [B, B, E]]
+        position1 = [[E, B, E],
+                     [E, B, E],
+                     [B, B, E]]
 
-        position2: Position = [[B, E, E],
-                               [B, B, B],
-                               [E, E, E]]
+        position2 = [[B, E, E],
+                     [B, B, B],
+                     [E, E, E]]
 
-        position3: Position = [[E, B, B],
-                               [E, B, E],
-                               [E, B, E]]
+        position3 = [[E, B, B],
+                     [E, B, E],
+                     [E, B, E]]
 
-        positions: List[Position] = [position0, position1, position2, position3]
+        positions = [position0, position1, position2, position3]
 
         super().__init__(positions, arcade.color.ALMOND, location)
 
 
 class L(Piece):
     def __init__(self, location: Location):
-        position0: Position = [[E, E, E],
-                               [B, B, B],
-                               [B, E, E]]
+        position0 = [[E, E, E],
+                     [B, B, B],
+                     [B, E, E]]
 
-        position1: Position = [[B, B, E],
-                               [E, B, E],
-                               [E, B, E]]
+        position1 = [[B, B, E],
+                     [E, B, E],
+                     [E, B, E]]
 
-        position2: Position = [[E, E, B],
-                               [B, B, B],
-                               [E, E, E]]
+        position2 = [[E, E, B],
+                     [B, B, B],
+                     [E, E, E]]
 
-        position3: Position = [[E, B, E],
-                               [E, B, E],
-                               [E, B, B]]
+        position3 = [[E, B, E],
+                     [E, B, E],
+                     [E, B, B]]
 
-        positions: List[Position] = [position0, position1, position2, position3]
+        positions = [position0, position1, position2, position3]
 
         super().__init__(positions, arcade.color.INDIGO, location)
 
 
 class S(Piece):
     def __init__(self, location: Location):
-        position0: Position = [[E, E, E],
-                               [E, B, B],
-                               [B, B, E]]
+        position0 = [[E, E, E],
+                     [E, B, B],
+                     [B, B, E]]
 
-        position1: Position = [[E, B, E],
-                               [E, B, B],
-                               [E, E, B]]
+        position1 = [[E, B, E],
+                     [E, B, B],
+                     [E, E, B]]
 
-        positions: List[Position] = [position0, position1]
+        positions = [position0, position1]
 
         super().__init__(positions, arcade.color.AQUA, location)
 
 
 class T(Piece):
     def __init__(self, location: Location):
-        position0: Position = [[E, E, E],
-                               [B, B, B],
-                               [E, B, E]]
+        position0 = [[E, E, E],
+                     [B, B, B],
+                     [E, B, E]]
 
-        position1: Position = [[E, B, E],
-                               [B, B, E],
-                               [E, B, E]]
+        position1 = [[E, B, E],
+                     [B, B, E],
+                     [E, B, E]]
 
-        position2: Position = [[E, B, E],
-                               [B, B, B],
-                               [E, E, E]]
+        position2 = [[E, B, E],
+                     [B, B, B],
+                     [E, E, E]]
 
-        position3: Position = [[E, B, E],
-                               [E, B, B],
-                               [E, B, E]]
+        position3 = [[E, B, E],
+                     [E, B, B],
+                     [E, B, E]]
 
-        positions: List[Position] = [position0, position1, position2, position3]
+        positions = [position0, position1, position2, position3]
 
         super().__init__(positions, arcade.color.EUCALYPTUS, location)
 
 
 class Z(Piece):
     def __init__(self, location: Location):
-        position0: Position = [[E, E, E],
-                               [B, B, E],
-                               [E, B, B]]
+        position0 = [[E, E, E],
+                     [B, B, E],
+                     [E, B, B]]
 
-        position1: Position = [[E, E, B],
-                               [E, B, B],
-                               [E, B, E]]
+        position1 = [[E, E, B],
+                     [E, B, B],
+                     [E, B, E]]
 
-        positions: List[Position] = [position0, position1]
+        positions = [position0, position1]
 
         super().__init__(positions, arcade.color.GRAY, location)
